@@ -52,19 +52,6 @@ SELECT * FROM AddressType;
 
 
 
--- CREATING LABTEST TABLE FOR STORING THE TEST REPORTS INFO
-
-CREATE TABLE LabTest(
-	LabTestId INT (5) PRIMARY KEY,
-    TestName VARCHAR(45) NOT NULL,
-    isActive BIT(1) NOT NULL,
-    min_Value VARCHAR(10) NOT NULL,
-    max_value VARCHAR(10) NOT NULL,
-    callUnit VARCHAR(30) NOT NULL    
-);
-SELECT * FROM LabTest;
--- DROP TABLE LabTest;
-
 -- Creating employee table for storing the employee Details
 
 CREATE TABLE EmployeeDetails(
@@ -282,6 +269,58 @@ CREATE TABLE Feedback(
 );
 SELECT * FROM Feedback;
 -- DROP TABLE Feedback;
+
+
+-- CREATING LABTEST TABLE FOR STORING THE TEST REPORTS INFO
+
+CREATE TABLE LabTest(
+	LabTestId INT (5) PRIMARY KEY,
+    TestName VARCHAR(45) NOT NULL,
+    isActive BIT(1) NOT NULL,
+    min_Value VARCHAR(10) NOT NULL,
+    max_value VARCHAR(10) NOT NULL,
+    callUnit VARCHAR(30) NOT NULL    
+);
+SELECT * FROM LabTest;
+-- DROP TABLE LabTest;
+
+
+-- Crating  a Table for storing the PatientLabReport
+CREATE TABLE PatientLabReport(
+	PatientLabReportId INT PRIMARY KEY,
+    PatientRegisterId INT,
+    LabTestId INT,
+    TestValue VARCHAR(45),
+    Comments VARCHAR(100),
+    
+    FOREIGN KEY (PatientRegisterId) REFERENCES PatientRegister(PatientRegisterId),
+    FOREIGN KEY (LabTestId)  REFERENCES LabTest(LabTestId)
+    
+);
+SELECT * FROM PatientLabReport;
+-- DROP TABLE PatientLabReport;
+
+
+-- Creating PatientAppointment table for Appointing The Patient,
+
+CREATE TABLE PatientAppointment(
+	PatientId INT,
+    EmployeeId INT ,
+    AppointmentDate DATETIME,
+    IsComplete BIT(1),
+    IsCancelled BIT(1),
+    IsNowShow BIT(1),
+    CreatedBy INT,
+    CreatedOn VARCHAR(45),
+    PRIMARY KEY (PatientId, EmployeeId, AppointmentDate),
+    
+
+);
+SELECT * FROM PatientAppointment;
+-- DROP TABLE PatientAppointment;
+
+
+
 
 
 
