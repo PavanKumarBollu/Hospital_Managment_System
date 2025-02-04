@@ -31,7 +31,7 @@ SELECT * FROM Role;
  -- DROP TABLE Role;
 
 
--- Desease table fro storing the desease name 
+-- Desease table for storing the desease name 
 
 CREATE TABLE Desease (
 	Desease INT (5) PRIMARY KEY,
@@ -65,6 +65,50 @@ CREATE TABLE LabTest(
 SELECT * FROM LabTest;
 -- DROP TABLE LabTest;
 
+-- Creating employee table for storing the employee Details
+
+CREATE TABLE EmployeeDetails(
+	EmployeeDetailsId INT PRIMARY KEY,
+    FirstName VARCHAR(45) NOT NULL,
+    LastName VARCHAR(45) NOT NULL,
+    DateOfBirth DATE NOT NULL,
+    Gender VARCHAR(45) NOT NULL,
+    PhoneNumber VARCHAR(45) NOT NULL,
+    RoleId INT NOT NULL,
+    CreatedOn DATETIME NOT NULL,
+    ModifiedOn DATETIME,
+    EmployeeId INT NOT NULL,
+    FOREIGN KEY (RoleId) REFERENCES Role (RoleId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
+);
+SELECT * FROM EmployeeDetails;
+-- DROP TABLE EmployeeDetails; 
+
+-- Creating employee Table for the Employee Login Deatils
+
+CREATE TABLE Employee(
+	EmployeeId INT PRIMARY KEY,
+    EmployeeNumber VARCHAR(45),
+    EmailId VARCHAR(45),
+    Password VARCHAR(45),
+    CreatedBy INT,
+    CreatedOn DATETIME
+);
+SELECT * FROM Employee;
+
+-- DROP TABLE Employee;
+
+CREATE TABLE EmployeeDepartment(
+EmployeeId INT,
+DepartmentId INT,
+IsActive BIT(1),
+PRIMARY KEY (EmployeeId, DepartmentId), -- composite key
+FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
+FOREIGN KEY (DepartmentId) REFERENCES Department(DepartmentId)
+);
+SELECT * FROM EmployeeDepartment;
+DROP TABLE EmployeeDepartment;
+
 
 -- CREATING ADDRESS TABLE FOR STORING THE ADDRESS OF THE ALL PEOPLE INVOLVED IN HOSPITAL 
 
@@ -80,29 +124,5 @@ CREATE TABLE Address(
 );
 SELECT * FROM Address;
 -- DROP TABLE Address;
-
-
--- Creating employee table for storing the employee Details
-
-CREATE TABLE EmployeeDetails(
-	EmployeeDetailsId INT PRIMARY KEY,
-    FirstName VARCHAR(45) NOT NULL,
-    LastName VARCHAR(45) NOT NULL,
-    DateOfBirth DATE NOT NULL,
-    Gender VARCHAR(45) NOT NULL,
-    PhoneNumber VARCHAR(45) NOT NULL,
-    RoleId INT NOT NULL,
-    CreatedOn DATETIME NOT NULL,
-    ModifiedOn DATETIME,
-    EmployeeId INT NOT NULL,
-    FOREIGN KEY (RoleId) REFERENCES Role (RoleId)
-);
-SELECT * FROM EmployeeDetails;
-
--- DROP TABLE EmployeeDetails;
-
-
-
-
 
 
