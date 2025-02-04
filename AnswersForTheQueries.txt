@@ -1,0 +1,120 @@
+DDL (Data Definition Language)
+
+SQL
+
+ALTER TABLE EmployeeDetails
+ADD MiddleName VARCHAR(45) AFTER FirstName;
+
+SQL
+
+ALTER TABLE Address
+MODIFY COLUMN ZipCode VARCHAR(10);
+SQL
+
+ALTER TABLE PatientRegister
+CHANGE COLUMN PatientInsurentId PatientInsuranceId INT;
+SQL
+
+ALTER TABLE EmployeeAddressMapping
+DROP COLUMN IndexV;
+SQL
+
+CREATE TABLE AppointmentType (
+    AppointmentTypeId INT PRIMARY KEY,
+    AppointmentDescription VARCHAR(100)
+);
+DML (Data Manipulation Language)
+
+SQL
+
+INSERT INTO Patient (PatientId, PatientRegNo, FirstName, LastName, DateOfBirth, Gender, PhoneNumber, EmailId, Height, Weight, BloodGroup, CreatedOn, ModifiedOn)
+VALUES (21, 'REG021', 'New', 'Patient', '2000-01-01', 'Other', '+91-9999999999', 'new.patient@example.com', '170 cm', '70 kg', 'A+', '2023-10-28 00:00:00', NULL);
+SQL
+
+UPDATE EmployeeDetails
+SET PhoneNumber = '+91-1234567890'
+WHERE EmployeeDetailsId = 1;  -- Replace 1 with the actual EmployeeDetailsId
+SQL
+
+DELETE FROM Address
+WHERE AddressId = 1; -- Replace 1 with the actual AddressId, be careful with foreign key constraints!  You might need to delete related records in other tables first.
+SQL
+
+INSERT INTO Role (RoleId, RoleDesc) VALUES
+(21, 'New Role 1'),
+(22, 'New Role 2'),
+(23, 'New Role 3');
+SQL
+
+UPDATE EmployeeDepartment
+SET IsActive = 0
+WHERE EmployeeId = 101 AND DepartmentId = 1; -- Replace with the actual EmployeeId and DepartmentId
+JOINs (Combining Data from Multiple Tables)
+
+SQL
+
+SELECT ed.FirstName, ed.LastName, d.DepartmentName
+FROM EmployeeDetails ed
+JOIN Role r ON ed.RoleId = r.RoleId
+JOIN EmployeeDepartment edp ON ed.EmployeeId = edp.EmployeeId
+JOIN Department d ON edp.DepartmentId = d.DepartmentId;
+SQL
+
+SELECT p.FirstName, p.LastName, pi.ProviderName
+FROM Patient p
+JOIN PatientInsurance pi ON p.PatientId = pi.PatientId;
+SQL
+
+SELECT e.FirstName, e.LastName
+FROM Employee e
+JOIN PatientAttendant pa ON e.EmployeeId = pa.EmployeeId
+JOIN PatientRegister pr ON pa.PatientRegisterId = pr.PatientRegisterId
+WHERE pr.PatientId = 1; -- Replace 1 with the specific patient's ID
+SQL
+
+SELECT p.FirstName, p.LastName, pr.AdmittedOn, pr.RoomNumber
+FROM Patient p
+JOIN PatientRegister pr ON p.PatientId = pr.PatientId;
+SQL
+
+SELECT p.FirstName, p.LastName, at.Type, a.Address1, a.Address2, a.City, a.State, a.ZipCode
+FROM Patient p
+JOIN PatientAddressMapping pam ON p.PatientId = pam.PatientId
+JOIN AddressType at ON pam.AddressTypeId = at.AddressTypeId
+JOIN Address a ON pam.AddressId = a.AddressId;
+SQL
+
+SELECT lt.TestName, p.FirstName, p.LastName, plr.TestValue
+FROM LabTest lt
+JOIN PatientLabReport plr ON lt.LabTestId = plr.LabTestId
+JOIN PatientRegister pr ON plr.PatientRegisterId = pr.PatientRegisterId
+JOIN Patient p ON pr.PatientId = p.PatientId;
+SQL
+
+SELECT p.FirstName, p.LastName
+FROM Patient p
+JOIN Feedback f ON p.PatientId = f.FromPatientId
+WHERE f.Rating = '5 stars';
+SQL
+
+SELECT e.FirstName, e.LastName, COUNT(pa.PatientRegisterId) AS NumberOfPatients
+FROM Employee e
+LEFT JOIN PatientAttendant pa ON e.EmployeeId = pa.EmployeeId
+GROUP BY e.FirstName, e.LastName;
+SQL
+
+SELECT p.FirstName, p.LastName, pi.ProviderName, pi.InNetworkCoPay, pi.OutNetworkCoPay
+FROM Patient p
+JOIN PatientInsurance pi ON p.PatientId = pi.PatientId;
+SQL
+
+SELECT p.FirstName, p.LastName, e.FirstName, e.LastName, pa.AppointmentDate,
+       CASE
+           WHEN pa.IsComplete = 1 THEN 'Complete'
+           WHEN pa.IsCancelled = 1 THEN 'Cancelled'
+           WHEN pa.IsNoShow = 1 THEN 'No Show'
+           ELSE 'Scheduled'  -- Or another appropriate status
+       END AS AppointmentStatus
+FROM PatientAppointment pa
+JOIN Patient p ON pa.PatientId = p.PatientId
+JOIN Employee e ON pa.EmployeeId = e.EmployeeId;
