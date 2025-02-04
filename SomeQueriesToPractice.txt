@@ -1,0 +1,27 @@
+DDL (Data Definition Language)
+
+Add a new column called MiddleName of type VARCHAR(45) to the EmployeeDetails table after the FirstName column.
+Change the data type of the ZipCode column in the Address table to VARCHAR(10).
+Rename the PatientInsurentId column in the PatientRegister table to PatientInsuranceId.
+Drop the IndexV column from the EmployeeAddressMapping table.
+Create a new table called AppointmentType with columns AppointmentTypeId (INT, PRIMARY KEY) and AppointmentDescription (VARCHAR(100)).
+
+DML (Data Manipulation Language)
+
+Insert a new patient record into the Patient table with sample data.
+Update the PhoneNumber for a specific employee in the EmployeeDetails table.
+Delete a specific address record from the Address table (be careful with foreign key constraints!).
+Insert multiple records into the Role table using a single INSERT statement.
+Update the IsActive status of a specific employee in the EmployeeDepartment table.
+JOINs (Combining Data from Multiple Tables)
+
+Retrieve the first name, last name, and department name for all employees.
+List all patients along with their insurance provider names.
+Find the names of all employees who are attendants for a specific patient.
+Display the patient's name, their admitted date, and the room number they are assigned to.
+Get the patient's name, their address type, and their full address (Address1, Address2, City, State, ZipCode).
+List all lab tests along with the patients who have taken those tests and their corresponding test values.
+Find the names of all patients who have given a rating of "5 stars" in their feedback.
+Retrieve the employee's first name, last name, and the number of patients they are attending to.
+Display the patient's name, their insurance provider, and their co-pay amounts (both in-network and out-of-network).
+List all appointments, including the patient's name, employee's name, appointment date, and appointment status (Complete, Cancelled, No Show).
