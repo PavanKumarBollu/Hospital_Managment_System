@@ -51,6 +51,23 @@ SELECT * FROM AddressType;
 
 
 
+-- Creating employee Table for the Employee Login Deatils
+
+CREATE TABLE Employee(
+	EmployeeId INT PRIMARY KEY,
+    EmployeeNumber VARCHAR(45),
+    EmailId VARCHAR(45),
+    Password VARCHAR(45),
+    CreatedBy INT,
+    CreatedOn DATETIME
+);
+SELECT * FROM Employee;
+
+-- DROP TABLE Employee;
+
+
+
+
 
 -- Creating employee table for storing the employee Details
 
@@ -71,19 +88,7 @@ CREATE TABLE EmployeeDetails(
 SELECT * FROM EmployeeDetails;
 -- DROP TABLE EmployeeDetails; 
 
--- Creating employee Table for the Employee Login Deatils
 
-CREATE TABLE Employee(
-	EmployeeId INT PRIMARY KEY,
-    EmployeeNumber VARCHAR(45),
-    EmailId VARCHAR(45),
-    Password VARCHAR(45),
-    CreatedBy INT,
-    CreatedOn DATETIME
-);
-SELECT * FROM Employee;
-
--- DROP TABLE Employee;
 
 CREATE TABLE EmployeeDepartment(
 EmployeeId INT,
@@ -94,7 +99,7 @@ FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId),
 FOREIGN KEY (DepartmentId) REFERENCES Department(DepartmentId)
 );
 SELECT * FROM EmployeeDepartment;
-DROP TABLE EmployeeDepartment;
+-- DROP TABLE EmployeeDepartment;
 
 
 -- CREATING ADDRESS TABLE FOR STORING THE ADDRESS OF THE ALL PEOPLE INVOLVED IN HOSPITAL 
@@ -110,7 +115,7 @@ CREATE TABLE Address(
     ModifiedOn DATETIME
 );
 SELECT * FROM Address;
--- DROP TABLE Address;
+ -- DROP TABLE Address;
 
 
 -- CREATING EMPLOYEE MAPPING TABLE FOR MANAGING THE EMPLOYES
@@ -128,9 +133,8 @@ CREATE TABLE EmployeeAddressMapping(
     FOREIGN KEY (EmployeeDetailsID) REFERENCES EmployeeDetails (EmployeeDetailsID),
     FOREIGN KEY (AddressTypeId) REFERENCES AddressType(AddressTypeId),
     FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
-    
-    
 );
+
 SELECT * FROM EmployeeAddressMapping;
 -- DROP TABLE EmployeeAddressMapping;
 
@@ -292,10 +296,8 @@ CREATE TABLE PatientLabReport(
     LabTestId INT,
     TestValue VARCHAR(45),
     Comments VARCHAR(100),
-    
     FOREIGN KEY (PatientRegisterId) REFERENCES PatientRegister(PatientRegisterId),
     FOREIGN KEY (LabTestId)  REFERENCES LabTest(LabTestId)
-    
 );
 SELECT * FROM PatientLabReport;
 -- DROP TABLE PatientLabReport;
@@ -313,7 +315,8 @@ CREATE TABLE PatientAppointment(
     CreatedBy INT,
     CreatedOn VARCHAR(45),
     PRIMARY KEY (PatientId, EmployeeId, AppointmentDate),
-    
+    FOREIGN KEY (PatientId) REFERENCES Patient(PatientId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
 
 );
 SELECT * FROM PatientAppointment;
