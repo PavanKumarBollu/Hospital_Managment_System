@@ -8,7 +8,6 @@ CREATE DATABASE IF NOT EXISTS hms;
 -- Creating table for storing the department information;
 
 CREATE TABLE Department (
-
 DepartmentId INT(5),
 DepartmentName VARCHAR(20) NOT NULL,
 PRIMARY KEY (DepartmentId)
@@ -33,12 +32,13 @@ SELECT * FROM Role;
 
 -- Desease table for storing the desease name 
 
-CREATE TABLE Desease (
-	Desease INT (5) PRIMARY KEY,
+CREATE TABLE Disease (
+	DiseaseID INT (5) PRIMARY KEY,
     name VARCHAR (45) NOT NULL 
 );
-SELECT * FROM Desease;
--- DROP TABLE Desease;
+
+SELECT * FROM Disease;
+ DROP TABLE Disease;
 
 -- CREATING ADDRESS TABLE FOR STORING THE ADDRESS DATA
 
@@ -124,5 +124,164 @@ CREATE TABLE Address(
 );
 SELECT * FROM Address;
 -- DROP TABLE Address;
+
+
+-- CREATING EMPLOYEE MAPPING TABLE FOR MANAGING THE EMPLOYES
+
+CREATE TABLE EmployeeAddressMapping(
+	EmployeeAddressMappingId INT PRIMARY KEY,
+    EmployeeDetailsID INT ,
+    AddressTypeId INT ,
+    AddressId INT,
+    IsActive BIT(1), 
+    IndexV INT,
+    CreatedOn DATETIME,
+    ModifiedOn DATETIME,
+    
+    FOREIGN KEY (EmployeeDetailsID) REFERENCES EmployeeDetails (EmployeeDetailsID),
+    FOREIGN KEY (AddressTypeId) REFERENCES AddressType(AddressTypeId),
+    FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+    
+    
+);
+SELECT * FROM EmployeeAddressMapping;
+-- DROP TABLE EmployeeAddressMapping;
+
+
+-- CREATING THE PATIENT TABLE FOR STORING THE PATIENT BASIC DETAILS 
+CREATE TABLE Patient(
+PatientId INT PRIMARY KEY,
+PatientRegNo VARCHAR(45),
+FirstName VARCHAR(45),
+LastName VARCHAR(45),
+DateOfBirth DATE,
+Gender VARCHAR(45),
+PhoneNumber VARCHAR(45),
+EmailId VARCHAR(45),
+Height VARCHAR(45),
+Weight VARCHAR(45),
+BloodGroup VARCHAR(45),
+CreatedOn DATETIME,
+ModifiedOn DATETIME
+
+);
+SELECT * FROM Patient;
+-- DROP TABLE Patient;
+
+
+-- Creating the PatientInsurance table for storing the insurance Details
+CREATE TABLE PatientInsurance(
+	PatientInsuranceId INT PRIMARY KEY,
+	PatientId INT,
+	ProviderName VARCHAR(45),
+	GroupName VARCHAR(45),
+	InsuranceNumber VARCHAR(45),
+	InNetworkCoPay INT,
+	OutNetworkCoPay INT,
+	StartDate DATETIME,
+	EndDate DATETIME,
+	isCurrent BIT(1),
+	CreatedOn DATETIME,
+	ModifiedOn DATETIME,
+	FOREIGN KEY (PatientId) REFERENCES Patient(PatientId)
+);
+SELECT * FROM PatientInsurance;
+-- DROP TABLE PatientInsurance;
+
+
+
+-- CREATING PATIENT REGISTER TABLE FOR REGISTERING THE PATIENT
+CREATE TABLE PatientRegister(
+PatientRegisterId INT PRIMARY KEY,
+PatientId INT,
+AdmittedOn VARCHAR(45),
+DischaredOn VARCHAR(45),
+PatientInsurentId INT,
+RoomNumber VARCHAR(45),
+CoPayType VARCHAR(45),
+FOREIGN KEY (PatientId) REFERENCES Patient(PatientId),
+FOREIGN KEY (PatientInsurentId) REFERENCES PatientInsurance(PatientInsuranceId)
+);
+
+SELECT * FROM PatientRegister;
+-- DROP TABLE PatientRegister;
+
+
+
+-- Creating Patient AddressMapping table for managing the patient Address
+CREATE TABLE PatientAddressMapping(
+	PatientAddressMappingId INT PRIMARY KEY,
+    PatientId INT,
+    AddressTypeId INT,
+    AddressId INT ,
+    IsActive BIT(1), 
+    IndexV INT,
+    CreatedOn DATETIME,
+    ModifiedOn DATETIME,
+    FOREIGN KEY (PatientId) REFERENCES Patient(PatientId),
+    FOREIGN KEY (AddressTypeId) REFERENCES AddressType(AddressTypeId),
+    FOREIGN KEY (AddressId) REFERENCES Address(AddressId)
+);
+SELECT * FROM PatientAddressMapping;
+-- DROP TABLE PatientAddressMapping
+
+-- creating the patientDisease for traking the patientDisease
+CREATE TABLE PatientDisease (
+	PatientRegisterId INT,
+	DiseaseId INT,
+	PRIMARY KEY (PatientRegisterId, DiseaseId),
+    FOREIGN KEY (PatientRegisterId) REFERENCES PatientRegister(PatientRegisterId),
+    FOREIGN KEY (DiseaseID) REFERENCES Disease(DiseaseId)
+);
+
+SELECT * FROM PatientDisease;
+-- DROP TABLE PatientDisease;
+
+
+
+-- creating PatientAttendant table for storing the attendant details
+CREATE TABLE PatientAttendant(
+	PatientRegisterId INT,
+    EmployeeId INT,
+    PRIMARY KEY (PatientRegisterId, EmployeeId),
+    FOREIGN KEY (PatientRegisterId) REFERENCES PatientRegister(PatientRegisterId),
+    FOREIGN KEY (EmployeeId) REFERENCES Employee(EmployeeId)
+);
+SELECT * FROM PatientAttendant;
+-- DROP TABLE PatientAttendant;
+
+
+-- Creating table for the PatientBilling Table For Storing the Billing Information
+CREATE TABLE PatientBilling(
+	PatientBillingId INT PRIMARY KEY,
+    PatientRegisterId INT ,
+    TranscationDesc VARCHAR(45) NOT NULL,
+    Ammount DECIMAL(8,2),
+    GenarateDate DATETIME,
+    TypeV VARCHAR(45),
+    PatientAddressId INT,
+    PaymentType VARCHAR(45),
+    FOREIGN KEY (PatientRegisterId) REFERENCES PatientRegister(PatientRegisterId),
+    FOREIGN KEY (PatientRegisterId) REFERENCES PatientAddressMapping(PatientAddressMappingId)
+);
+SELECT * FROM PatientBilling;
+-- DROP TABLE PatientBilling;
+
+
+-- Creating the FeedBack Table for Storing the Patient FeedBack
+
+CREATE TABLE Feedback(
+	FeedbackId INT PRIMARY KEY,
+    FromPatientId INT,
+    ToEmployeeId INT,
+    CommentV VARCHAR(45),
+    Rating VARCHAR(45),
+    CreatedOn DATETIME,
+    FOREIGN KEY (FromPatientId) REFERENCES Patient(PatientId),
+	FOREIGN KEY (ToEmployeeId) REFERENCES Employee(EmployeeId)
+);
+SELECT * FROM Feedback;
+-- DROP TABLE Feedback;
+
 
 
